@@ -19,8 +19,7 @@ if ventas_file and vendedores_file:
     df['Nombre'] = df['Nombre'].astype(str).str.strip().str.upper()
     df['Descrip'] = df['Descrip'].astype(str).str.strip()
     df['Clave'] = df['Clave'].astype(str).str.strip()
-    df['Vendedor'] = df['Vendedor'].astype(str).str.strip().str.upper()
-
+    
     # Reordenar columnas (opcional)
     df = df[sorted(df.columns)]
 
