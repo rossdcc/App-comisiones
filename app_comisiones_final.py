@@ -15,12 +15,13 @@ if ventas_file and vendedores_file:
     vendedores = pd.read_excel(vendedores_file)
 
     # Asegurar nombres consistentes
-    df['Cliente'] = df['Cliente'].astype(str).str.strip().str.upper()
-    vendedores['Cliente'] = vendedores['Cliente'].astype(str).str.strip().str.upper()
+    df['Nombre'] = df['Nombre'].astype(str).str.strip().str.upper()
+    vendedores['Nombre'] = vendedores['Nombre'].astype(str).str.strip().str.upper()
     vendedores['Vendedor'] = vendedores['Vendedor'].astype(str).str.strip().str.upper()
 
     # Unir por cliente
     df = df.merge(vendedores[['Cliente', 'Vendedor']], on='Cliente', how='left')
+    df = df.drop_duplicates()
 
     # Normalizar descripción
     df['Descrip'] = df['Descrip'].str.lower()
@@ -28,9 +29,9 @@ if ventas_file and vendedores_file:
     # Filtros por material
     filtro_oro = df['Descrip'].str.contains(r'\b\d{2}k\b', na=False) & ~df['Descrip'].str.contains(r'\bcha\b|\bchapa\b|\bace\b|\bacero\b', na=False)
     filtro_plata = (
-        df['Clave'].str.contains("TP", na=False) |
-        (df['Descrip'].str.contains(r'.925|\bplata\b|\barras', na=False) &
-         ~df['Descrip'].str.contains(r'\bcha\b|\bchapa\b|\bace\b|\bacero\b', na=False))
+    df['Clave'].str.contains("TP", na=False) |
+    (df['Descrip'].str.contains(r'.925|\\bplata\\b|\\barras', na=False) &
+     ~df['Descrip'].str.contains(r'\\bcha\\b|\\bchapa\\b|\\bace\\b|\\bacero\\b|\\breloj\\b', na=False))
     )
     filtro_acero = df['Descrip'].str.contains(r'\bace\b|\bacero\b', na=False) & ~filtro_oro & ~filtro_plata
     filtro_chapa = df['Descrip'].str.contains(r'\bcha\b|\bchapa\b', na=False) & ~filtro_acero
