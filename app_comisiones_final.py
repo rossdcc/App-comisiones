@@ -15,12 +15,31 @@ if ventas_file and vendedores_file:
     vendedores = pd.read_excel(vendedores_file)
 
     # Asegurar nombres consistentes
+    # Limpiar texto en columnas relevantes
     df['Nombre'] = df['Nombre'].astype(str).str.strip().str.upper()
+    df['Descrip'] = df['Descrip'].astype(str).str.strip()
+    df['Clave'] = df['Clave'].astype(str).str.strip()
+    df['Vendedor'] = df['Vendedor'].astype(str).str.strip().str.upper()
+
+    # Reordenar columnas (opcional)
+    df = df[sorted(df.columns)]
+
+    # Ahora sí: quitar duplicados
+    df = df.drop_duplicates()
+
+    # Limpiar texto en columnas relevantes
     vendedores['Nombre'] = vendedores['Nombre'].astype(str).str.strip().str.upper()
     vendedores['Vendedor'] = vendedores['Vendedor'].astype(str).str.strip().str.upper()
 
+    # Reordenar columnas (opcional)
+    vendedores = vendedores[sorted(vendedores.columns)]
+
+    # Ahora sí: quitar duplicados
+    vendedores = vendedores.drop_duplicates()
+
+
     # Unir por cliente
-    df = df.merge(vendedores[['Cliente', 'Vendedor']], on='Cliente', how='left')
+    df = df.merge(vendedores[['Nombre', 'Vendedor']], on='Nombre', how='left')
     df = df.drop_duplicates()
 
     # Normalizar descripción
