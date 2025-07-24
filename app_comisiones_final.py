@@ -46,6 +46,7 @@ if ventas_file and vendedores_file:
     df['Descrip'] = df['Descrip'].str.lower()
 
     # Filtros por material
+    filtro_reloj = df['Descrip'].str.contains(r'\breloj\b', na=False)
     filtro_oro = df['Descrip'].str.contains(r'\b\d{2}k\b', na=False) & ~df['Descrip'].str.contains(r'\bcha\b|\bchapa\b|\bace\b|\bacero\b', na=False)
     filtro_plata = (
     df['Clave'].str.contains("TP", na=False) |
@@ -54,7 +55,6 @@ if ventas_file and vendedores_file:
     )
     filtro_acero = df['Descrip'].str.contains(r'\bace\b|\bacero\b', na=False) & ~filtro_oro & ~filtro_plata
     filtro_chapa = df['Descrip'].str.contains(r'\bcha\b|\bchapa\b', na=False) & ~filtro_acero
-    filtro_reloj = df['Descrip'].str.contains(r'\breloj\b', na=False)
     filtro_fantasia = df['Clave'].str.contains('JF', na=False)
 
     # Separar por tipo de material
