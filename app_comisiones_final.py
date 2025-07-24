@@ -52,7 +52,7 @@ if ventas_file and vendedores_file:
     df['Clave'].str.contains("TP", na=False) |
     (df['Descrip'].str.contains(r'.925|\\bplata\\b|\\barras', na=False) &
      ~df['Descrip'].str.contains(r'\\bcha\\b|\\bchapa\\b|\\bace\\b|\\bacero\\b|\\breloj\\b', na=False))
-    )
+    ) & ~filtro_reloj
     filtro_acero = df['Descrip'].str.contains(r'\bace\b|\bacero\b', na=False) & ~filtro_oro & ~filtro_plata
     filtro_chapa = df['Descrip'].str.contains(r'\bcha\b|\bchapa\b', na=False) & ~filtro_acero
     filtro_fantasia = df['Clave'].str.contains('JF', na=False)
