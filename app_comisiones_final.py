@@ -36,10 +36,11 @@ if ventas_file and vendedores_file:
     # Ahora sí: quitar duplicados
     vendedores = vendedores.drop_duplicates()
 
+    # Crear un diccionario {cliente: vendedor}
+    diccionario_vendedores = dict(zip(vendedores['Nombre'], vendedores['Vendedor']))
 
-    # Unir por cliente
-    df = df.merge(vendedores[['Nombre', 'Vendedor']], on='Nombre', how='left')
-    df = df.drop_duplicates()
+    # Crear nueva columna "Vendedor" sin usar merge
+    df['Vendedor'] = df['Nombre'].map(diccionario_vendedores)
 
     # Normalizar descripción
     df['Descrip'] = df['Descrip'].str.lower()
